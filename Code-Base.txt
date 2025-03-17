@@ -12,3 +12,22 @@ StudentManager
 - Serves as the intermidiary between UI and storage
 - Functions will have to be reworked to send data to the UI to be displayed, or send/retrieve data to/from storage
 
+AttendanceManager
+1) Student-Records, AttendanceListing.java, enableTable (there are probably others but my brain is blanking)
+- Checking the data that was retrieved and then telling the UI what to enable
+ 
+GradeManager
+1) Student-Records, GradeManagementSystem.java
+  a) GenerateReportAction
+- Creating a report from the student's grades
+  b) SaveGradeAction
+- Taking the data entered in the UI and sending it to storage
+
+ExpenseManager
+1) Expense
+  a) ExpenseDialog, saveExpense, Lines 67-77
+
+
+
+
+
