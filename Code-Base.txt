@@ -1,0 +1,14 @@
+Use Ctrl+F to find things more easily
+
+LoginManager
+1) Authorisation, SignUpOrIn.java, cmdEnterButtonListener
+- Serves as the intermidiary between UI, UserVerification and storage. 
+- Meant to get the data from the UI fields, send it to be verified, and then either communicate via opening the relevant UI or storing a user
+
+StudentManager
+1) Student-Records, StudentListing.java
+  a) addStudentClicked
+  b) updateSelectedRecord
+- Serves as the intermidiary between UI and storage
+- Functions will have to be reworked to send data to the UI to be displayed, or send/retrieve data to/from storage
+
