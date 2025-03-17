@@ -1,0 +1,46 @@
+Use Ctrl+F to find things more easily
+
+UserRecord
+1) Authorisation, User.java
+- This is for adding and deleting users. UserVerification and LoginManager will rely on this class
+
+StudentRecord
+1) Student-Records, Student.java
+- This is for adding, updating and deleting students. StudentManager, AttendanceManager and GradeManager will depend on this class
+
+AttendanceRecord
+1) Student-Records, AttendanceListing.java
+  a) SaveMorningAttendance
+  b) SaveAfternoonAttendance
+- This is for adding student attendance. 
+- Whilst it would be good to save it to an SQL database, txt files also works.
+- A function for retrieving attendance records would also be good. If you want to implement such:
+  a) loadAttendance has the functionality, but it's only if you've already saved attendance for the day
+- AttendanceManager will depend on this
+
+GradeRecord
+1) Student-Records, GradeManagement.java
+  a) SaveGradeAction
+  b) GenerateReportAction, Lines 90 to 93
+  c) saveReportToFile
+- This is for adding grades
+- Whilst it would be good to save it to an SQL database, txt files also works.
+- GradeManager will depend on this
+
+ExpenseRecord
+1) Expense
+  a) Expense.java
+  b) ExpenseDialog.java, saveExpense
+  c) ExpenseManagerApp.java
+    i) loadExpenses, saveExpenses, addExpense, editExpense(Line 98), viewExpenses
+- This is for adding and editing expenses
+- Whilst it would be good to save it to an SQL database, txt/dat files also works.
+- ExpenseManager will depend on this
+
+InventoryRecord
+1) Inventory
+  a) InventoryItem.java
+  b) InventoryManager.java
+- This is for adding and editing inventory
+- Whilst it would be good to save it to an SQL database, txt/dat files also works.
+- InventoryManager will depend on this
