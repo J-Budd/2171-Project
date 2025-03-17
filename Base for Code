@@ -1,0 +1,4 @@
+Use Ctrl+F to look for things in files more easily
+
+1) Authorisation, SignUpOrIn, cmdEnterButtonListener, actionPerformed.
+- The UserVerification will have to communicate with the UserRecord class in Data Persistence
