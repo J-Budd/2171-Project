@@ -3,8 +3,6 @@ package Application_Logic;
 // Used GitHub Copilot in VScode to separate the old 2140 code to follow the Package Diagram
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import java.io.IOException;
 import java.text.ParseException;
 import UI.LoginScreen;
@@ -68,7 +66,7 @@ public class LoginManager {
             String roleLower = userLogin.getRole().toLowerCase();
             if (roleLower.equals("principal")) {
                 loginScreen.showPopUp("Log in successful");
-                // new PrincipalListing().setVisible(true);
+                new UI.PrincipalListing().setVisible(true);
             } else if (roleLower.equals("teacher")) {
                 // new TeacherListing(userLogin).setVisible(true);
             } else if (roleLower.equals("cook")) {
