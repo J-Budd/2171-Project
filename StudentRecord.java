@@ -17,7 +17,7 @@ public class StudentRecord {
     private static ArrayList<StudentRecord> studentList = new ArrayList<>();
     
     
-    private static final String MASTER_FILE = "Data/Student/Records/StudentsList.txt";
+    private static final String MASTER_FILE = "Data/Student/Records/StudentRecord.txt";
 
     //constructor for creating a new student record.
 
@@ -99,6 +99,36 @@ public class StudentRecord {
             System.out.println("Error loading students: " + e.getMessage());
         }
     }
+
+    //Accessors 
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
+    }
+    
+    public String getBirthdate() {
+        return birthdate;
+    }
+    
+    public String getAddress() {
+        return address;
+    }
+    
+    public String getGuardian() {
+        return guardian;
+    }
+    
+    public String getRegularContact() {
+        return regularContact;
+    }
+    
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
     
     public static StudentRecord findStudent(String firstName, String lastName) {
         for (StudentRecord sr : studentList) {
@@ -152,32 +182,4 @@ public class StudentRecord {
         return new ArrayList<>(studentList);
     }
     
-    //Accessors 
-    public String getFirstName() {
-        return firstName;
-    }
-    
-    public String getLastName() {
-        return lastName;
-    }
-    
-    public String getBirthdate() {
-        return birthdate;
-    }
-    
-    public String getAddress() {
-        return address;
-    }
-    
-    public String getGuardian() {
-        return guardian;
-    }
-    
-    public String getRegularContact() {
-        return regularContact;
-    }
-    
-    public String getEmergencyContact() {
-        return emergencyContact;
-    }
 }
