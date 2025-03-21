@@ -1,6 +1,6 @@
 package applicationlogic;
 
-import datapersistence.StudentRecord;
+import DataPersistence.StudentRecord;
 
 public class StudentManager {
 
@@ -9,19 +9,19 @@ public class StudentManager {
         StudentRecord.loadStudentsFromFile();
     }
     
-    // Create: Adds a new student record.
+    // Add a new student record.
     public static StudentRecord addStudent(String firstName, String lastName, String birthdate,
                                              String address, String guardian, String regularContact,
                                              String emergencyContact) {
         return new StudentRecord(firstName, lastName, birthdate, address, guardian, regularContact, emergencyContact);
     }
     
-    // Read: Finds a student record by first and last name.
+    // Finds a student record by first and last name.
     public static StudentRecord findStudent(String firstName, String lastName) {
         return StudentRecord.findStudent(firstName, lastName);
     }
     
-    // Update: Updates an existing student's details.
+    // Updates an existing student's details.
     public static void updateStudent(String firstName, String lastName, String newBirthdate,
                                      String newAddress, String newGuardian, String newRegularContact,
                                      String newEmergencyContact) {
@@ -33,7 +33,7 @@ public class StudentManager {
         }
     }
     
-    // Delete: Removes a student record.
+    // Removes a student record.
     public static void deleteStudent(String firstName, String lastName) {
         StudentRecord student = findStudent(firstName, lastName);
         if (student != null) {
@@ -43,7 +43,7 @@ public class StudentManager {
         }
     }
     
-    // New method to display an individual student record's details
+    // Display an individual student record's details
     public static void displayStudentRecord(String firstName, String lastName) {
         StudentRecord student = findStudent(firstName, lastName);
         if (student != null) {
@@ -59,7 +59,7 @@ public class StudentManager {
         }
     }
     
-    // Optional: Lists all students (for display purposes)
+    // Lists all students
     public static void listStudents() {
         System.out.println("Listing Students:");
         for (StudentRecord sr : StudentRecord.getAllStudents()) {
