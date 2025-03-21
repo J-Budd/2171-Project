@@ -1,4 +1,4 @@
-package DataPersistence;
+package Data_Persistence;
 
 import java.io.*;
 import java.util.*;
@@ -14,7 +14,7 @@ public class StudentRecord {
     private String emergencyContact;
     
 
-    private static ArrayList<StudentRecord> studentList = new ArrayList<>();
+    public static ArrayList<StudentRecord> studentList = new ArrayList<>();
     
     
     private static final String MASTER_FILE = "Data/Student/Records/StudentRecord.txt";
@@ -70,8 +70,7 @@ public class StudentRecord {
     private void appendToMasterFile() {
         File studentFile = new File(MASTER_FILE);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(studentFile, true))) {
-            writer.write(lastName + " " + firstName + " " + birthdate + " " + address + " " +
-                         guardian + " " + regularContact + " " + emergencyContact);
+            writer.write(String.join("|", lastName, firstName, birthdate, address, guardian, regularContact, emergencyContact));
             writer.newLine();
             System.out.println("Student saved to master file.");
         } catch (IOException e) {
@@ -89,7 +88,7 @@ public class StudentRecord {
         try (Scanner scanner = new Scanner(masterFile)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] tokens = line.split(" ");
+                String[] tokens = line.split("\\|");
                 if (tokens.length >= 7) {
                     new StudentRecord(tokens[1], tokens[0], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], true);
                 }
@@ -139,8 +138,10 @@ public class StudentRecord {
         return null;
     }
     
-    public void updateStudent(String newBirthdate, String newAddress, String newGuardian,
-                              String newRegularContact, String newEmergencyContact) {
+    public void updateStudent(String newFirstName, String newLastName, String newBirthdate, String newAddress,
+                              String newGuardian, String newRegularContact, String newEmergencyContact) {
+        this.firstName = newFirstName;
+        this.lastName = newLastName;
         this.birthdate = newBirthdate;
         this.address = newAddress;
         this.guardian = newGuardian;
@@ -167,9 +168,7 @@ public class StudentRecord {
         File studentFile = new File(MASTER_FILE);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(studentFile))) {
             for (StudentRecord sr : studentList) {
-                writer.write(sr.lastName + " " + sr.firstName + " " + sr.birthdate + " " +
-                             sr.address + " " + sr.guardian + " " + sr.regularContact + " " +
-                             sr.emergencyContact);
+                writer.write(String.join("|", sr.lastName, sr.firstName, sr.birthdate, sr.address, sr.guardian, sr.regularContact, sr.emergencyContact));
                 writer.newLine();
             }
             System.out.println("Master file updated.");
