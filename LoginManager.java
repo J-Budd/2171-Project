@@ -3,20 +3,21 @@ package Application_Logic;
 // Used GitHub Copilot in VScode to separate the old 2140 code to follow the Package Diagram
 import java.util.ArrayList;
 
-import java.io.IOException;
-import java.text.ParseException;
 import UI.LoginScreen;
 import UI.MainEntry;
 import Security.UserVerification;
 import Data_Persistence.UserRecord;
 
 public class LoginManager {
+    // Added comments for better readability
+    // Handle login logic for both sign-in and sign-up
     public static void handleLogin(boolean signIn, String username, String password1, String password2, String role, MainEntry mainScreen, LoginScreen loginScreen) {
         ArrayList<UserRecord> users = UserRecord.userlist;
         UserRecord userLogin = null;
         boolean usernameAvail = true;
         boolean principalAvail = true;
 
+        // Check username availability and principal role constraints
         if (!signIn) {
             for (UserRecord i : users) {
                 if (i.getRole().toLowerCase().equals("principal")){
@@ -68,7 +69,8 @@ public class LoginManager {
                 loginScreen.showPopUp("Log in successful");
                 new UI.PrincipalListing().setVisible(true);
             } else if (roleLower.equals("teacher")) {
-                // new TeacherListing(userLogin).setVisible(true);
+                loginScreen.showPopUp("Log in successful");
+                new UI.TeacherListing().setVisible(true);
             } else if (roleLower.equals("cook")) {
                 // InventoryMain.main(new String[]{});
             } else {
