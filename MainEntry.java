@@ -56,7 +56,7 @@ public class MainEntry extends JFrame {
         panel.add(cmdSignIn);
         panel.add(cmdSignUp);
         panel.add(cmdClose);
-        panel.setPreferredSize(new Dimension(500, 400));
+        panel.setPreferredSize(new Dimension(1000, 600));
 
         add(panel);
         pack();
@@ -65,7 +65,7 @@ public class MainEntry extends JFrame {
 
     private static void createAndShowGUI() {
         MainEntry mainEntry = new MainEntry();
-        mainEntry.setPreferredSize(new Dimension(500, 400));
+        mainEntry.setPreferredSize(new Dimension(1000, 800));
         mainEntry.setResizable(false);
         mainEntry.setLocationRelativeTo(null);
         mainEntry.setVisible(true);

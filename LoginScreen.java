@@ -66,6 +66,7 @@ public class LoginScreen extends JFrame {
         add(mainPanel);
         pack();
 
+        setPreferredSize(new Dimension(1000, 800));
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);

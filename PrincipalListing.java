@@ -11,34 +11,67 @@ import Data_Persistence.StudentRecord;
 import Application_Logic.StudentManager;
 
 public class PrincipalListing extends JFrame {
-    private JButton cmdViewStudentRecords;
-    private JButton cmdViewStudentAttendance;
-    private JButton cmdViewStudentGrades;
-    private JButton cmdViewExpenses;
+    private JButton btnViewAttendance;
+    private JButton btnViewGrades;
+    private JButton btnViewExpenses;
+    private JButton btnViewStudentRecords; // New button for viewing student records
+    private JButton btnClose;
 
     public PrincipalListing() {
         setTitle("Principal Dashboard");
-        setLayout(new GridLayout(4, 1, 10, 10));
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(1000, 100));
 
-        cmdViewStudentRecords = new JButton("View Student Records");
-        cmdViewStudentAttendance = new JButton("View Student Attendance");
-        cmdViewStudentGrades = new JButton("View Student Grades");
-        cmdViewExpenses = new JButton("View Expenses");
+        // Greeting Panel
+        JPanel pnlGreeting = new JPanel();
+        JLabel lblGreeting = new JLabel("Welcome to the Principal Dashboard");
+        pnlGreeting.add(lblGreeting);
+        add(pnlGreeting, BorderLayout.NORTH);
 
-        cmdViewStudentRecords.addActionListener(new ActionListener() {
+        // Command Panel
+        JPanel pnlCommand = new JPanel();
+        btnViewAttendance = new JButton("View Attendance");
+        btnViewGrades = new JButton("View Grades");
+        btnViewExpenses = new JButton("View Expenses");
+        btnViewStudentRecords = new JButton("View Student Records"); // Initialize new button
+        btnClose = new JButton("Close");
+
+        pnlCommand.add(btnViewAttendance);
+        pnlCommand.add(btnViewGrades);
+        pnlCommand.add(btnViewExpenses);
+        pnlCommand.add(btnViewStudentRecords); // Add new button to panel
+        pnlCommand.add(btnClose);
+        add(pnlCommand, BorderLayout.SOUTH);
+
+        // Button Actions
+        btnViewAttendance.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AttendanceScreen().setVisible(true);
+            }
+        });
+
+        btnViewStudentRecords.addActionListener(new ActionListener() { // Action for new button
+            @Override
             public void actionPerformed(ActionEvent e) {
                 new StudentRecordsWindow().setVisible(true);
             }
         });
 
-        add(cmdViewStudentRecords);
-        add(cmdViewStudentAttendance);
-        add(cmdViewStudentGrades);
-        add(cmdViewExpenses);
+        btnClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
         pack();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new PrincipalListing().setVisible(true));
     }
 
     private class StudentRecordsWindow extends JFrame {
