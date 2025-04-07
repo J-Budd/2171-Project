@@ -3,7 +3,6 @@ package Data_Persistence;
 // Used GitHub Copilot in VScode to separate the old 2140 code to follow the Package Diagram
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class UserRecord {

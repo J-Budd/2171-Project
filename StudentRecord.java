@@ -18,6 +18,7 @@ public class StudentRecord {
     
     
     private static final String MASTER_FILE = "Data/Student/Records/StudentRecord.txt";
+    private static final String STUDENTS_LIST_FILE = "Data/Student/Records/StudentsList.txt";
 
     //constructor for creating a new student record.
 
@@ -33,6 +34,7 @@ public class StudentRecord {
         createStudentFile();
         studentList.add(this);
         appendToMasterFile();
+        saveStudentNamesToFile();
     }
     
     private StudentRecord(String firstName, String lastName, String birthdate, String address,
@@ -148,6 +150,7 @@ public class StudentRecord {
         this.regularContact = newRegularContact;
         this.emergencyContact = newEmergencyContact;
         rewriteMasterFile();
+        saveStudentNamesToFile();
     }
     
 
@@ -161,6 +164,7 @@ public class StudentRecord {
             System.out.println("Failed to delete student file: " + fileName);
         }
         rewriteMasterFile();
+        saveStudentNamesToFile();
     }
     
 
@@ -179,6 +183,19 @@ public class StudentRecord {
     
     public static List<StudentRecord> getAllStudents() {
         return new ArrayList<>(studentList);
+    }
+
+    public static void saveStudentNamesToFile() {
+        File studentsListFile = new File(STUDENTS_LIST_FILE);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(studentsListFile))) {
+            for (StudentRecord sr : studentList) {
+                writer.write(sr.getFirstName() + " " + sr.getLastName());
+                writer.newLine();
+            }
+            System.out.println("Student names saved to StudentsList.txt.");
+        } catch (IOException e) {
+            System.out.println("Error saving student names to file: " + e.getMessage());
+        }
     }
     
 }
