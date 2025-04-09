@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public class AttendanceListingUI extends JFrame {
+public class AttendanceScreen extends JFrame {
     private JTable table;
     private DefaultTableModel model;
     private JButton btnSaveMorning;
@@ -22,7 +22,7 @@ public class AttendanceListingUI extends JFrame {
     private JComboBox<String> attendMornTypes;
     private JComboBox<String> attendNoonTypes;
 
-    public AttendanceListingUI() {
+    public AttendanceScreen() {
         setTitle("Attendance Listing");
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1000, 600));

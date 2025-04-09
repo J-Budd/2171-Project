@@ -41,6 +41,13 @@ public class TeacherListing extends JFrame {
             }
         });
 
+        btnViewGrades.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GradeUI().setVisible(true);
+            }
+        });
+
         btnClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
