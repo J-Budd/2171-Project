@@ -1,5 +1,6 @@
 package Data_Persistence;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class GradeRecord {
@@ -77,6 +78,17 @@ public class GradeRecord {
         return false;
     }
     
+    // Add a grade entry for a specific subject and date
+    public void addGrade(String subject, int grade, LocalDate date) {
+        if (SUBJECTS.contains(subject)) {
+            Map<Integer, Integer> termGrades = grades.get(subject);
+            if (termGrades != null) {
+                // Assuming term 1 for simplicity; adjust logic if term determination is needed
+                termGrades.put(1, grade);
+            }
+        }
+    }
+
     // Reassigns the student to a new teacher and records the assignment in the history.
     public void reassignTeacher(String newTeacher, int year) {
         this.teacherAssigned = newTeacher;
