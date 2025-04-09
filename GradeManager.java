@@ -1,6 +1,7 @@
 package Application_Logic;
 
 import Data_Persistence.GradeRecord;
+import Data_Persistence.StudentRecord;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -151,7 +152,12 @@ public class GradeManager {
     
     // Append a single record to the file.
     private static void appendRecordToFile(GradeRecord record) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(GRADE_RECORD_FILE, true))) {
+        File directory = new File("Data/Grades/");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        File file = new File(GRADE_RECORD_FILE);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             writer.write(serializeRecord(record));
             writer.newLine();
         } catch (IOException e) {
@@ -160,7 +166,12 @@ public class GradeManager {
     }
     
     public static void saveAllRecordsToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(GRADE_RECORD_FILE))) {
+        File directory = new File("Data/Grades/");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        File file = new File(GRADE_RECORD_FILE);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (GradeRecord record : gradeRecords) {
                 writer.write(serializeRecord(record));
                 writer.newLine();
