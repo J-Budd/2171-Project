@@ -1,52 +1,35 @@
+package expense;
 
 
-import java.io.Serializable;
-import java.util.Date;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Expense implements Serializable {
-    private double amount;
-    private String description;
-    private String type;
-    private Date date;  // Add a Date field to store the date of the expense
+public class ExpenseRecord {
+    private static final String FILE_PATH = "Data/Expense/expenses.dat";
 
-    // Constructor for the expense
-    public Expense(double amount, String description, String type) {
-        this.amount = amount;
-        this.description = description;
-        this.type = type;
-        this.date = new Date();  // Set the date to the current date when the expense is created
+    public static ArrayList<Expense> loadExpenses() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
+            return (ArrayList<Expense>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
 
-    // Getters and Setters for the fields
-    public double getAmount() {
-        return amount;
-    }
+    public static void saveExpenses(List<Expense> expenses) {
+        try {
+            // Create the directory if it doesn't exist
+            File file = new File(FILE_PATH);
+            File parentDir = file.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();  // This creates the full path
+            }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Date getDate() {
-        return date;  // This is the method that was missing
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+            out.writeObject(expenses);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
