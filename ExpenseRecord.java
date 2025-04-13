@@ -1,5 +1,6 @@
-package expense;
+package Data_Persistence;
 
+import Application_Logic.Expense;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -8,12 +9,17 @@ import java.util.List;
 public class ExpenseRecord {
     private static final String FILE_PATH = "Data/Expense/expenses.dat";
 
+    @SuppressWarnings("unchecked") // Suppress unchecked cast warning
     public static ArrayList<Expense> loadExpenses() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
-            return (ArrayList<Expense>) ois.readObject();
+            Object obj = ois.readObject();
+            if (obj instanceof ArrayList<?>) {
+                return (ArrayList<Expense>) obj; // Safe cast
+            }
         } catch (IOException | ClassNotFoundException e) {
-            return new ArrayList<>();
+            // Handle exception
         }
+        return new ArrayList<>();
     }
 
     public static void saveExpenses(List<Expense> expenses) {
