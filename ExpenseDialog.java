@@ -1,4 +1,7 @@
-package expense;
+package UI;
+
+import Application_Logic.Expense;
+import Application_Logic.ExpenseManager;
 
 import javax.swing.*;
 import java.awt.*;

@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 
-import Data_Persistence.GradeRecord;
 import Application_Logic.GradeManager;
+import Data_Persistence.GradeRecord;
 import Data_Persistence.StudentRecord;
 
 public class GradeUI extends JFrame {
@@ -28,14 +28,36 @@ public class GradeUI extends JFrame {
         setTitle("Grade Records");
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBackground(Color.decode("#A3BFDD"));
 
         JPanel pnlCommand = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pnlCommand.setBackground(Color.decode("#A3BFDD"));
+        pnlCommand.setForeground(Color.decode("#A3BFDD"));
         cmdAddGradeRecord = new JButton("Add Grade Record");
         cmdUpdateGradeRecord = new JButton("Update Grade Record");
         cmdDeleteGradeRecord = new JButton("Delete Grade Record");
         cmdViewGradeDetails = new JButton("View Grade Details");
         cmdSortByStudent = new JButton("Sort by Student");
         cmdSortByTeacher = new JButton("Sort by Teacher");
+
+        cmdAddGradeRecord.setBackground(Color.decode("#A31621"));
+        cmdAddGradeRecord.setForeground(Color.WHITE);
+        cmdAddGradeRecord.setBorder(null);
+        cmdUpdateGradeRecord.setBackground(Color.decode("#A31621"));
+        cmdUpdateGradeRecord.setForeground(Color.WHITE);
+        cmdUpdateGradeRecord.setBorder(null);
+        cmdDeleteGradeRecord.setBackground(Color.decode("#A31621"));
+        cmdDeleteGradeRecord.setForeground(Color.WHITE);
+        cmdDeleteGradeRecord.setBorder(null);
+        cmdViewGradeDetails.setBackground(Color.decode("#A31621"));
+        cmdViewGradeDetails.setForeground(Color.WHITE);
+        cmdViewGradeDetails.setBorder(null);
+        cmdSortByStudent.setBackground(Color.decode("#A31621"));
+        cmdSortByStudent.setForeground(Color.WHITE);
+        cmdSortByStudent.setBorder(null);
+        cmdSortByTeacher.setBackground(Color.decode("#A31621"));
+        cmdSortByTeacher.setForeground(Color.WHITE);
+        cmdSortByTeacher.setBorder(null);
 
         pnlCommand.add(cmdAddGradeRecord);
         pnlCommand.add(cmdUpdateGradeRecord);
@@ -48,6 +70,9 @@ public class GradeUI extends JFrame {
         String[] columnNames = {"Student ID", "First Name", "Last Name", "Teacher", "Monthly Report"};
         model = new DefaultTableModel(columnNames, 0);
         table = new JTable(model);
+        table.setBackground(Color.decode("#A3BFDD"));
+        table.setForeground(Color.decode("#A3BFDD"));
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         add(new JScrollPane(table), BorderLayout.CENTER);
 
         cmdAddGradeRecord.addActionListener(e -> new AddUpdateGradeWindow().setVisible(true));
@@ -157,12 +182,10 @@ public class GradeUI extends JFrame {
             setLayout(new BorderLayout(10, 10));
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-            // Add padding around the window
             JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
             contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             setContentPane(contentPanel);
 
-            // Top Panel: Student Info
             JPanel pnlStudentInfo = new JPanel(new GridLayout(2, 3, 10, 10));
             pnlStudentInfo.add(new JLabel("First Name:"));
             pnlStudentInfo.add(new JLabel("Last Name:"));
@@ -175,7 +198,6 @@ public class GradeUI extends JFrame {
             pnlStudentInfo.add(txtTeacherAssigned);
             contentPanel.add(pnlStudentInfo, BorderLayout.NORTH);
 
-            // Center Panel: Grade Entry Section
             JPanel pnlEntry = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
             cmbSubject = new JComboBox<>(GradeRecord.SUBJECTS.toArray(new String[0]));
             pnlEntry.add(new JLabel("Subject:"));
@@ -193,13 +215,11 @@ public class GradeUI extends JFrame {
             pnlEntry.add(btnRemoveEntry);
             contentPanel.add(pnlEntry, BorderLayout.CENTER);
 
-            // Table for grade entries
             String[] columns = {"Subject", "Grade", "Date"};
             gradeTableModel = new DefaultTableModel(columns, 0);
             gradeTable = new JTable(gradeTableModel);
             contentPanel.add(new JScrollPane(gradeTable), BorderLayout.SOUTH);
 
-            // Bottom Panel: Save/Cancel
             JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             cmdSave = new JButton("Save");
             cmdCancel = new JButton("Cancel");
@@ -207,7 +227,6 @@ public class GradeUI extends JFrame {
             pnlButtons.add(cmdCancel);
             contentPanel.add(pnlButtons, BorderLayout.PAGE_END);
 
-            // Button Actions
             btnAddEntry.addActionListener(e -> {
                 String subject = (String) cmbSubject.getSelectedItem();
                 String gradeStr = txtGrade.getText().trim();
@@ -246,7 +265,6 @@ public class GradeUI extends JFrame {
                     if (confirm != JOptionPane.YES_OPTION) return;
                 }
 
-                // Save logic
                 GradeRecord record = GradeManager.findGradeRecord(txtStudentFirstName.getText(), txtStudentLastName.getText());
                 if (record == null) {
                     record = new GradeRecord(
@@ -269,7 +287,6 @@ public class GradeUI extends JFrame {
 
             cmdCancel.addActionListener(e -> dispose());
 
-            // Pre-fill fields if updating
             if (gradeData != null) {
                 txtStudentFirstName.setText(gradeData[0]);
                 txtStudentLastName.setText(gradeData[1]);

@@ -1,5 +1,7 @@
-package expense;
+package UI;
 
+import Application_Logic.Expense;
+import Application_Logic.ExpenseManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,22 +17,43 @@ public class ExpenseGUI extends JFrame {
         manager = new ExpenseManager();
 
         setTitle("Expense Manager");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 400);
         setLocationRelativeTo(null);
 
+        getContentPane().setBackground(Color.decode("#A3BFDD"));
+
         tableModel = new ExpenseTableModel(manager.getExpenses());
         expenseTable = new JTable(tableModel);
+        expenseTable.setBackground(Color.decode("#A3BFDD"));
+        expenseTable.setForeground(Color.decode("#A3BFDD"));
 
         JScrollPane scrollPane = new JScrollPane(expenseTable);
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.decode("#A3BFDD"));
+        buttonPanel.setForeground(Color.decode("#A3BFDD"));
 
         JButton addButton = new JButton("Add");
+        addButton.setBackground(Color.decode("#A31621"));
+        addButton.setForeground(Color.WHITE);
+        addButton.setBorder(null);
+
         JButton editButton = new JButton("Edit");
+        editButton.setBackground(Color.decode("#A31621"));
+        editButton.setForeground(Color.WHITE);
+        editButton.setBorder(null);
+
         JButton deleteButton = new JButton("Delete");
-        JButton reportButton = new JButton("Termly Report"); // 📌 Added
+        deleteButton.setBackground(Color.decode("#A31621"));
+        deleteButton.setForeground(Color.WHITE);
+        deleteButton.setBorder(null);
+
+        JButton reportButton = new JButton("Termly Report");
+        reportButton.setBackground(Color.decode("#A31621"));
+        reportButton.setForeground(Color.WHITE);
+        reportButton.setBorder(null);
 
         // Add button
         addButton.addActionListener(e -> {
@@ -66,7 +89,7 @@ public class ExpenseGUI extends JFrame {
             }
         });
 
-        // 📌 Termly Report button
+        // Termly Report button
         reportButton.addActionListener(e -> {
             String report = manager.generateTermlyReport();
             JTextArea textArea = new JTextArea(report);
@@ -80,7 +103,7 @@ public class ExpenseGUI extends JFrame {
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(reportButton); // 📌 Added to panel
+        buttonPanel.add(reportButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
     }

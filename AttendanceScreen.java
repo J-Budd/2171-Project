@@ -26,15 +26,26 @@ public class AttendanceScreen extends JFrame {
         setTitle("Attendance Listing");
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1000, 600));
+        setBackground(Color.decode("#A3BFDD"));
 
         // Initialize buttons first
         btnSaveMorning = new JButton("Save Morning Attendance");
         btnSaveAfternoon = new JButton("Save Afternoon Attendance");
 
+        btnSaveMorning.setBackground(Color.decode("#A31621"));
+        btnSaveMorning.setForeground(Color.WHITE);
+        btnSaveMorning.setBorder(null);
+        btnSaveAfternoon.setBackground(Color.decode("#A31621"));
+        btnSaveAfternoon.setForeground(Color.WHITE);
+        btnSaveAfternoon.setBorder(null);
+
         // Table Setup
         String[] columnNames = {"Full Name", "Morning", "Afternoon", "Note"};
         model = new DefaultTableModel(columnNames, 0);
         table = new JTable(model);
+
+        // Table Header
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
 
         // Morning Attendance Column
         TableColumn morningColumn = table.getColumnModel().getColumn(1);
@@ -64,9 +75,14 @@ public class AttendanceScreen extends JFrame {
 
         // Button Panel
         JPanel pnlButtons = new JPanel();
+        pnlButtons.setBackground(Color.decode("#A3BFDD"));
+        pnlButtons.setForeground(Color.decode("#A3BFDD"));
         pnlButtons.add(btnSaveMorning);
         pnlButtons.add(btnSaveAfternoon);
         add(pnlButtons, BorderLayout.SOUTH);
+
+        table.setBackground(Color.decode("#A3BFDD"));
+        table.setForeground(Color.decode("#A3BFDD"));
 
         // Button Actions
         btnSaveMorning.addActionListener(new ActionListener() {

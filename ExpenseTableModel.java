@@ -1,8 +1,9 @@
-package expense;
+package UI;
 
 import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import Application_Logic.Expense;
 
 public class ExpenseTableModel extends AbstractTableModel {
     private final String[] columns = {"Amount", "Description", "Type", "Date"};

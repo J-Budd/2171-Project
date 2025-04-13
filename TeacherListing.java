@@ -1,5 +1,10 @@
 package UI;
 
+import Application_Logic.AttendanceManager;
+import Application_Logic.GradeManager;
+import Data_Persistence.AttendanceRecord;
+import Data_Persistence.GradeRecord;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,20 +18,39 @@ public class TeacherListing extends JFrame {
     public TeacherListing() {
         setTitle("Teacher Dashboard");
         setLayout(new BorderLayout());
-        // Adjusted layout size for better readability and usability
+        setBackground(Color.decode("#A3BFDD"));
         setPreferredSize(new Dimension(1000, 100));
 
         // Greeting Panel
         JPanel pnlGreeting = new JPanel();
+        pnlGreeting.setBackground(Color.decode("#A3BFDD"));
+        pnlGreeting.setForeground(Color.decode("#A3BFDD"));
         JLabel lblGreeting = new JLabel("Welcome to the Teacher Dashboard");
+        lblGreeting.setForeground(Color.decode("#191919"));
+        lblGreeting.setFont(new Font("Arial", Font.BOLD, 24));
         pnlGreeting.add(lblGreeting);
         add(pnlGreeting, BorderLayout.NORTH);
 
         // Command Panel
         JPanel pnlCommand = new JPanel();
+        pnlCommand.setBackground(Color.decode("#A3BFDD"));
+        pnlCommand.setForeground(Color.decode("#A3BFDD"));
         btnViewAttendance = new JButton("View Attendance");
         btnViewGrades = new JButton("View Grades");
         btnClose = new JButton("Close");
+
+        btnViewAttendance.setBackground(Color.decode("#A31621"));
+        btnViewAttendance.setForeground(Color.WHITE);
+        btnViewAttendance.setBorder(null);
+        btnViewAttendance.setPreferredSize(new Dimension(100, 20));
+        btnViewGrades.setBackground(Color.decode("#A31621"));
+        btnViewGrades.setForeground(Color.WHITE);
+        btnViewGrades.setBorder(null);
+        btnViewGrades.setPreferredSize(new Dimension(100, 20));
+        btnClose.setBackground(Color.decode("#A31621"));
+        btnClose.setForeground(Color.WHITE);
+        btnClose.setBorder(null);
+        btnClose.setPreferredSize(new Dimension(100, 20));
 
         pnlCommand.add(btnViewAttendance);
         pnlCommand.add(btnViewGrades);

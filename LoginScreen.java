@@ -1,11 +1,11 @@
 package UI;
 
-// Used GitHub Copilot in VScode to separate the old 2140 code to follow the Package Diagram
+import Application_Logic.LoginManager;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import Application_Logic.LoginManager;
 
 public class LoginScreen extends JFrame {
     private boolean signIn;
@@ -29,6 +29,11 @@ public class LoginScreen extends JFrame {
         mainPanel = new JPanel(new GridLayout(0, 1));
         secondPanel = new JPanel(new GridLayout(7, 2, 40, 10));
 
+        mainPanel.setBackground(Color.decode("#A3BFDD"));
+        mainPanel.setForeground(Color.decode("#A3BFDD"));
+        secondPanel.setBackground(Color.decode("#A3BFDD"));
+        secondPanel.setForeground(Color.decode("#A3BFDD"));
+
         screenDescription = new JLabel(signIn ? "Sign-In" : "Sign-Up");
         JLabel spacer = new JLabel("");
         usernameField = new JTextField();
@@ -36,12 +41,15 @@ public class LoginScreen extends JFrame {
         cmdBack = new JButton("Back");
         cmdEnter = new JButton("Enter");
 
+        screenDescription.setForeground(Color.decode("#191919"));
         screenDescription.setFont(new Font("Arial", Font.BOLD, 24));
 
-        cmdBack.setBackground(Color.DARK_GRAY);
+        cmdBack.setBackground(Color.decode("#A31621"));
         cmdBack.setForeground(Color.WHITE);
-        cmdEnter.setBackground(Color.DARK_GRAY);
+        cmdBack.setBorder(null);
+        cmdEnter.setBackground(Color.decode("#A31621"));
         cmdEnter.setForeground(Color.WHITE);
+        cmdEnter.setBorder(null);
 
         cmdEnter.addActionListener(new cmdEnterButtonListener());
         cmdBack.addActionListener(new cmdBackButtonListener());

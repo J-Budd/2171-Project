@@ -9,10 +9,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Comparator;
 
-import Data_Persistence.StudentRecord;
 import Application_Logic.StudentManager;
-import Data_Persistence.GradeRecord;
 import Application_Logic.GradeManager;
+import Application_Logic.AttendanceManager;
+import Application_Logic.ExpenseManager;
+import Data_Persistence.StudentRecord;
+import Data_Persistence.GradeRecord;
+import Data_Persistence.AttendanceRecord;
+import UI.ExpenseGUI;
+import UI.ExpenseDialog;
+import UI.AttendanceScreen;
 
 public class PrincipalListing extends JFrame {
     private JButton btnViewAttendance;
@@ -25,20 +31,48 @@ public class PrincipalListing extends JFrame {
         setTitle("Principal Dashboard");
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1000, 100));
+        setBackground(Color.decode("#A3BFDD")); // Set background color
 
         // Greeting Panel
         JPanel pnlGreeting = new JPanel();
+        pnlGreeting.setBackground(Color.decode("#A3BFDD")); // Set background color
+        pnlGreeting.setForeground(Color.decode("#A3BFDD")); // Set foreground color
         JLabel lblGreeting = new JLabel("Welcome to the Principal Dashboard");
+        lblGreeting.setForeground(Color.decode("#191919")); // Set text color
+        lblGreeting.setFont(new Font("Arial", Font.BOLD, 24)); // Set title font
         pnlGreeting.add(lblGreeting);
         add(pnlGreeting, BorderLayout.NORTH);
 
         // Command Panel
         JPanel pnlCommand = new JPanel();
+        pnlCommand.setBackground(Color.decode("#A3BFDD")); // Set background color
+        pnlCommand.setForeground(Color.decode("#A3BFDD")); // Set foreground color
         btnViewAttendance = new JButton("View Attendance");
         btnViewGrades = new JButton("View Grades");
         btnViewExpenses = new JButton("View Expenses");
-        btnViewStudentRecords = new JButton("View Student Records");
+        btnViewStudentRecords = new JButton("View Students");
         btnClose = new JButton("Close");
+
+        btnViewAttendance.setBackground(Color.decode("#A31621")); // Set button background color
+        btnViewAttendance.setForeground(Color.WHITE); // Set button text color
+        btnViewAttendance.setBorder(null);
+        btnViewAttendance.setPreferredSize(new Dimension(100, 20));
+        btnViewGrades.setBackground(Color.decode("#A31621")); // Set button background color
+        btnViewGrades.setForeground(Color.WHITE); // Set button text color
+        btnViewGrades.setBorder(null);
+        btnViewGrades.setPreferredSize(new Dimension(100, 20));
+        btnViewExpenses.setBackground(Color.decode("#A31621")); // Set button background color
+        btnViewExpenses.setForeground(Color.WHITE); // Set button text color
+        btnViewExpenses.setBorder(null);
+        btnViewExpenses.setPreferredSize(new Dimension(100, 20));
+        btnViewStudentRecords.setBackground(Color.decode("#A31621")); // Set button background color
+        btnViewStudentRecords.setForeground(Color.WHITE); // Set button text color
+        btnViewStudentRecords.setBorder(null);
+        btnViewStudentRecords.setPreferredSize(new Dimension(100, 20));
+        btnClose.setBackground(Color.decode("#A31621")); // Set button background color
+        btnClose.setForeground(Color.WHITE); // Set button text color
+        btnClose.setBorder(null);
+        btnClose.setPreferredSize(new Dimension(100, 20));
 
         pnlCommand.add(btnViewAttendance);
         pnlCommand.add(btnViewGrades);
@@ -51,6 +85,7 @@ public class PrincipalListing extends JFrame {
         btnViewAttendance.addActionListener(e -> new AttendanceScreen().setVisible(true));
         btnViewStudentRecords.addActionListener(e -> new StudentRecordsWindow().setVisible(true));
         btnViewGrades.addActionListener(e -> new GradeUI().setVisible(true));
+        btnViewExpenses.addActionListener(e -> new ExpenseGUI().setVisible(true));
         btnClose.addActionListener(e -> System.exit(0));
 
         pack();
@@ -221,19 +256,6 @@ public class PrincipalListing extends JFrame {
                 pack();
                 setLocationRelativeTo(null);
             }
-        }
-    }
-
-    // -------------------------------
-    // AttendanceScreen stub (unchanged)
-    // -------------------------------
-    private class AttendanceScreen extends JFrame {
-        public AttendanceScreen() {
-            setTitle("Attendance Screen");
-            setSize(400, 300);
-            setLocationRelativeTo(null);
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            add(new JLabel("Attendance functionality goes here."), BorderLayout.CENTER);
         }
     }
 
