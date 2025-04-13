@@ -1,5 +1,4 @@
-
-package expense;
+package Application_Logic;
 
 import java.io.Serializable;
 import java.util.Date;

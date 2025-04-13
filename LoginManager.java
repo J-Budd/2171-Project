@@ -66,13 +66,11 @@ public class LoginManager {
         if (userLogin != null) {
             String roleLower = userLogin.getRole().toLowerCase();
             if (roleLower.equals("principal")) {
-                loginScreen.showPopUp("Log in successful");
                 new UI.PrincipalListing().setVisible(true);
             } else if (roleLower.equals("teacher")) {
-                loginScreen.showPopUp("Log in successful");
                 new UI.TeacherListing().setVisible(true);
             } else if (roleLower.equals("cook")) {
-                // InventoryMain.main(new String[]{});
+                new UI.CookListing().setVisible(true);
             } else {
                 loginScreen.showPopUp("Invalid Role");
                 return;

@@ -1,6 +1,7 @@
 package Application_Logic;
 
 import Data_Persistence.StudentRecord;
+import Data_Persistence.IDGenerator;
 
 public class StudentManager {
 
