@@ -1,6 +1,5 @@
 package UI;
 
-import Application_Logic.LoginManager;
 import Data_Persistence.UserRecord;
 
 import java.awt.*;
@@ -14,8 +13,7 @@ public class MainEntry extends JFrame {
     private LoginScreen loginScreen; // Reference to the LoginScreen instance
 
     private JLabel screenDescription; // Label displaying the screen description
-    private JLabel imageLabel; // Label to display the image
-    
+
     private JButton cmdSignIn; // Button for signing in
     private JButton cmdSignUp; // Button for signing up
     private JButton cmdClose; // Button for closing the application
@@ -31,14 +29,15 @@ public class MainEntry extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(new EmptyBorder(50, 50, 50, 50));
         panel.setBackground(Color.decode("#A3BFDD"));
-        panel.setForeground(Color.decode("#A3BFDD"));
 
         screenDescription = new JLabel("Lakespen Basic School Database Manager", SwingConstants.CENTER);
         screenDescription.setForeground(Color.decode("#191919")); 
         screenDescription.setFont(new Font("Arial", Font.BOLD, 24));
 
-        imageLabel = new JLabel(new ImageIcon(new ImageIcon("Resources/SchoolCrest.jpg")
-            .getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH)));
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Resources/SchoolCrest.jpg"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH);
+        // Label to display the image
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
         cmdSignIn = new JButton("Sign In");
         cmdSignUp = new JButton("Sign Up");
         cmdClose = new JButton("Close");
@@ -95,11 +94,9 @@ public class MainEntry extends JFrame {
     }
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                UserRecord.loadExistingUsers();
-                createAndShowGUI();
-            }
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            UserRecord.loadExistingUsers();
+            createAndShowGUI();
         });
     }
 
