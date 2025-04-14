@@ -6,7 +6,7 @@ import java.util.*;
 public class GradeRecord {
     // List of subjects
     public static final List<String> SUBJECTS = Arrays.asList("Maths", "Language", "Phonics", "Art", "Spelling", "Music");
-
+    private int studentId;
     private String studentFirstName;
     private String studentLastName;
     private String teacherAssigned;
@@ -16,7 +16,8 @@ public class GradeRecord {
     private Map<String, Map<Integer, Integer>> grades;
     private int currentYear;
 
-    public GradeRecord(String studentFirstName, String studentLastName, String teacherAssigned) {
+    public GradeRecord(int studentId, String studentFirstName, String studentLastName, String teacherAssigned) {
+        this.studentId = studentId;
         this.studentFirstName = studentFirstName;
         this.studentLastName = studentLastName;
         this.teacherAssigned = teacherAssigned;
@@ -122,6 +123,14 @@ public class GradeRecord {
     
     public Map<String, Map<Integer, Integer>> getAllGrades() {
         return grades;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public String getMonthlyReport() {
+        return generateMonthlyReport(LocalDate.now().getMonth().toString(), null);
     }
 }
 

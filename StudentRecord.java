@@ -140,6 +140,15 @@ public class StudentRecord {
         return null;
     }
 
+    public static StudentRecord findStudentByID(int id) {
+        for (StudentRecord sr : studentList) {
+            if (sr.getId() == id) {
+                return sr;
+            }
+        }
+        return null;
+    }
+
     public void updateStudent(String newFirstName, String newLastName, String newBirthdate, String newAddress,
                               String newGuardian, String newRegularContact, String newEmergencyContact) {
         this.firstName = newFirstName;
