@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Comparator;
 
 import Application_Logic.StudentManager;
@@ -31,46 +32,46 @@ public class PrincipalListing extends JFrame {
         setTitle("Principal Dashboard");
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1000, 100));
-        setBackground(Color.decode("#A3BFDD")); // Set background color
+        setBackground(Color.decode("#A3BFDD"));
 
         // Greeting Panel
         JPanel pnlGreeting = new JPanel();
-        pnlGreeting.setBackground(Color.decode("#A3BFDD")); // Set background color
-        pnlGreeting.setForeground(Color.decode("#A3BFDD")); // Set foreground color
+        pnlGreeting.setBackground(Color.decode("#A3BFDD"));
+        pnlGreeting.setForeground(Color.decode("#A3BFDD")); 
         JLabel lblGreeting = new JLabel("Welcome to the Principal Dashboard");
-        lblGreeting.setForeground(Color.decode("#191919")); // Set text color
-        lblGreeting.setFont(new Font("Arial", Font.BOLD, 24)); // Set title font
+        lblGreeting.setForeground(Color.decode("#191919"));
+        lblGreeting.setFont(new Font("Arial", Font.BOLD, 24));
         pnlGreeting.add(lblGreeting);
         add(pnlGreeting, BorderLayout.NORTH);
 
         // Command Panel
         JPanel pnlCommand = new JPanel();
-        pnlCommand.setBackground(Color.decode("#A3BFDD")); // Set background color
-        pnlCommand.setForeground(Color.decode("#A3BFDD")); // Set foreground color
+        pnlCommand.setBackground(Color.decode("#A3BFDD"));
+        pnlCommand.setForeground(Color.decode("#A3BFDD")); 
         btnViewAttendance = new JButton("View Attendance");
         btnViewGrades = new JButton("View Grades");
         btnViewExpenses = new JButton("View Expenses");
         btnViewStudentRecords = new JButton("View Students");
         btnClose = new JButton("Close");
 
-        btnViewAttendance.setBackground(Color.decode("#A31621")); // Set button background color
-        btnViewAttendance.setForeground(Color.WHITE); // Set button text color
+        btnViewAttendance.setBackground(Color.decode("#A31621")); 
+        btnViewAttendance.setForeground(Color.WHITE); 
         btnViewAttendance.setBorder(null);
         btnViewAttendance.setPreferredSize(new Dimension(100, 20));
-        btnViewGrades.setBackground(Color.decode("#A31621")); // Set button background color
-        btnViewGrades.setForeground(Color.WHITE); // Set button text color
+        btnViewGrades.setBackground(Color.decode("#A31621")); 
+        btnViewGrades.setForeground(Color.WHITE); 
         btnViewGrades.setBorder(null);
         btnViewGrades.setPreferredSize(new Dimension(100, 20));
-        btnViewExpenses.setBackground(Color.decode("#A31621")); // Set button background color
-        btnViewExpenses.setForeground(Color.WHITE); // Set button text color
+        btnViewExpenses.setBackground(Color.decode("#A31621")); 
+        btnViewExpenses.setForeground(Color.WHITE); 
         btnViewExpenses.setBorder(null);
         btnViewExpenses.setPreferredSize(new Dimension(100, 20));
-        btnViewStudentRecords.setBackground(Color.decode("#A31621")); // Set button background color
-        btnViewStudentRecords.setForeground(Color.WHITE); // Set button text color
+        btnViewStudentRecords.setBackground(Color.decode("#A31621")); 
+        btnViewStudentRecords.setForeground(Color.WHITE); 
         btnViewStudentRecords.setBorder(null);
         btnViewStudentRecords.setPreferredSize(new Dimension(100, 20));
-        btnClose.setBackground(Color.decode("#A31621")); // Set button background color
-        btnClose.setForeground(Color.WHITE); // Set button text color
+        btnClose.setBackground(Color.decode("#A31621")); 
+        btnClose.setForeground(Color.WHITE); 
         btnClose.setBorder(null);
         btnClose.setPreferredSize(new Dimension(100, 20));
 
@@ -102,22 +103,38 @@ public class PrincipalListing extends JFrame {
         private JButton cmdAddStudent;
         private JButton cmdUpdateStudent;
         private JButton cmdDeleteStudent;
-        private JButton cmdSortByLastName;
-        private JButton cmdSortByBirthyear;
+        private JButton cmdSearch;
 
         public StudentRecordsWindow() {
             setTitle("Student Records");
             setLayout(new BorderLayout());
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setPreferredSize(new Dimension(1000,700));
 
             JPanel pnlCommand = new JPanel(new FlowLayout(FlowLayout.CENTER));
             JPanel pnlDisplay = new JPanel(new BorderLayout());
 
             cmdAddStudent = new JButton("Add Student Record");
+            cmdAddStudent.setBackground(Color.decode("#A31621"));
+            cmdAddStudent.setForeground(Color.WHITE);
+            cmdAddStudent.setBorder(null);
+
             cmdUpdateStudent = new JButton("Update Student Record");
+            cmdUpdateStudent.setForeground(Color.WHITE);
+            cmdUpdateStudent.setBorder(null);
+            cmdUpdateStudent.setBackground(Color.decode("#A31621"));
+
             cmdDeleteStudent = new JButton("Delete Student Record");
-            cmdSortByLastName = new JButton("Sort by Last Name");
-            cmdSortByBirthyear = new JButton("Sort by Birthyear");
+            cmdDeleteStudent.setBackground(Color.decode("#A31621"));
+            cmdDeleteStudent.setForeground(Color.WHITE);
+            cmdDeleteStudent.setBorder(null);
+
+            cmdSearch = new JButton("Search Student Record");
+            cmdSearch.setBackground(Color.decode("#A31621"));
+            cmdSearch.setForeground(Color.WHITE);
+            cmdSearch.setBorder(null);
+
+            cmdSearch.addActionListener(e -> new SearchStudentsWindow().setVisible(true));
 
             cmdAddStudent.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -141,17 +158,43 @@ public class PrincipalListing extends JFrame {
                 }
             });
 
-            /* The delete and sort actions are currently commented out in her version.
-               They can be re-enabled if needed. */
+            cmdDeleteStudent.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = table.getSelectedRow();
+                    if (selectedRow != -1) {
+                        String firstName = table.getValueAt(selectedRow, 0).toString();
+                        String lastName = table.getValueAt(selectedRow, 1).toString();
+                        StudentRecord sr = StudentRecord.findStudent(firstName, lastName);
+                        if (sr != null) {
+                            int confirm = JOptionPane.showConfirmDialog(
+                                StudentRecordsWindow.this, 
+                                "Are you sure you want to delete " + firstName + " " + lastName + "'s record?",
+                                "Confirm Deletion", 
+                                JOptionPane.YES_NO_OPTION
+                            );
+                            if (confirm == JOptionPane.YES_OPTION) {
+                                sr.deleteStudent();
+                                refreshTable();
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(StudentRecordsWindow.this, 
+                                                      "Please select a student record to delete.", 
+                                                      "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
             pnlCommand.add(cmdAddStudent);
             pnlCommand.add(cmdUpdateStudent);
             pnlCommand.add(cmdDeleteStudent);
-            pnlCommand.add(cmdSortByLastName);
-            pnlCommand.add(cmdSortByBirthyear);
+            pnlCommand.add(cmdSearch);
+            pnlCommand.setBackground(Color.decode("#A3BFDD"));
 
             String[] columnNames = {"First Name", "Last Name", "Birth Date", "Address", "Guardian", "Regular Contact", "Emergency Contact"};
             model = new DefaultTableModel(columnNames, 0);
             table = new JTable(model);
+            table.setBackground(Color.decode("#A3BFDD"));
 
             pnlDisplay.add(new JScrollPane(table), BorderLayout.CENTER);
 
@@ -165,10 +208,14 @@ public class PrincipalListing extends JFrame {
         }
 
         private void refreshTable() {
+            updateTable(StudentRecord.studentList);
+        }
+        
+        // Method to update the table with a given list of student records
+        private void updateTable(List<StudentRecord> records) {
             model.setRowCount(0);
-            StudentManager.initialize();
-            List<StudentRecord> students = StudentRecord.studentList;
-            for (StudentRecord sr : students) {
+            StudentManager.initialize(); // Ensure the list is loaded/updated
+            for (StudentRecord sr : records) {
                 model.addRow(new Object[]{
                     sr.getFirstName(),
                     sr.getLastName(),
@@ -252,6 +299,74 @@ public class PrincipalListing extends JFrame {
 
                 add(cmdSave);
                 add(cmdCancel);
+
+                pack();
+                setLocationRelativeTo(null);
+            }
+        }
+
+        private class SearchStudentsWindow extends JFrame {
+            private JComboBox<String> searchCriteria;
+            private JTextField searchField;
+            private JButton searchButton;
+            private JButton clearSearchButton;
+
+            public SearchStudentsWindow() {
+                setTitle("Search Students");
+                setLayout(new BorderLayout());
+                setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                setPreferredSize(new Dimension(400, 200));
+
+                JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                searchPanel.add(new JLabel("Search by:"));
+                String[] options = {"ID", "First Name", "Last Name"};
+                searchCriteria = new JComboBox<>(options);
+                searchPanel.add(searchCriteria);
+                searchField = new JTextField(15);
+                searchPanel.add(searchField);
+                searchButton = new JButton("Search");
+                searchPanel.add(searchButton);
+                clearSearchButton = new JButton("Clear");
+                searchPanel.add(clearSearchButton);
+
+                add(searchPanel, BorderLayout.CENTER);
+
+                searchButton.addActionListener(e -> {
+                    String criteria = (String) searchCriteria.getSelectedItem();
+                    String searchText = searchField.getText().trim();
+                    if (searchText.isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Search field cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    List<StudentRecord> filtered = new ArrayList<>();
+                    if (criteria.equals("ID")) {
+                        try {
+                            int id = Integer.parseInt(searchText);
+                            for (StudentRecord sr : StudentRecord.studentList) {
+                                if (sr.getId() == id)
+                                    filtered.add(sr);
+                            }
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(this, "Invalid ID format.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else if (criteria.equals("First Name")) {
+                        for (StudentRecord sr : StudentRecord.studentList) {
+                            if (sr.getFirstName().equalsIgnoreCase(searchText))
+                                filtered.add(sr);
+                        }
+                    } else if (criteria.equals("Last Name")) {
+                        for (StudentRecord sr : StudentRecord.studentList) {
+                            if (sr.getLastName().equalsIgnoreCase(searchText))
+                                filtered.add(sr);
+                        }
+                    }
+                    updateTable(filtered);
+                });
+
+                clearSearchButton.addActionListener(e -> {
+                    searchField.setText("");
+                    refreshTable();
+                });
 
                 pack();
                 setLocationRelativeTo(null);

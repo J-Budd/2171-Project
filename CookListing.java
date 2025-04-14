@@ -46,7 +46,6 @@ public class CookListing extends JFrame {
         table = new JTable(model);
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         table.setBackground(Color.decode("#A3BFDD"));
-        table.setForeground(Color.decode("#A3BFDD"));
 
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);

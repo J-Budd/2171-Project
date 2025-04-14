@@ -26,7 +26,6 @@ public class ExpenseGUI extends JFrame {
         tableModel = new ExpenseTableModel(manager.getExpenses());
         expenseTable = new JTable(tableModel);
         expenseTable.setBackground(Color.decode("#A3BFDD"));
-        expenseTable.setForeground(Color.decode("#A3BFDD"));
 
         JScrollPane scrollPane = new JScrollPane(expenseTable);
         add(scrollPane, BorderLayout.CENTER);

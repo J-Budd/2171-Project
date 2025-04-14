@@ -43,18 +43,23 @@ public class GradeUI extends JFrame {
         cmdAddGradeRecord.setBackground(Color.decode("#A31621"));
         cmdAddGradeRecord.setForeground(Color.WHITE);
         cmdAddGradeRecord.setBorder(null);
+
         cmdUpdateGradeRecord.setBackground(Color.decode("#A31621"));
         cmdUpdateGradeRecord.setForeground(Color.WHITE);
         cmdUpdateGradeRecord.setBorder(null);
+
         cmdDeleteGradeRecord.setBackground(Color.decode("#A31621"));
         cmdDeleteGradeRecord.setForeground(Color.WHITE);
         cmdDeleteGradeRecord.setBorder(null);
+
         cmdViewGradeDetails.setBackground(Color.decode("#A31621"));
         cmdViewGradeDetails.setForeground(Color.WHITE);
         cmdViewGradeDetails.setBorder(null);
+
         cmdSortByStudent.setBackground(Color.decode("#A31621"));
         cmdSortByStudent.setForeground(Color.WHITE);
         cmdSortByStudent.setBorder(null);
+
         cmdSortByTeacher.setBackground(Color.decode("#A31621"));
         cmdSortByTeacher.setForeground(Color.WHITE);
         cmdSortByTeacher.setBorder(null);
@@ -70,9 +75,8 @@ public class GradeUI extends JFrame {
         String[] columnNames = {"Student ID", "First Name", "Last Name", "Teacher", "Monthly Report"};
         model = new DefaultTableModel(columnNames, 0);
         table = new JTable(model);
-        table.setBackground(Color.decode("#A3BFDD"));
-        table.setForeground(Color.decode("#A3BFDD"));
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        table.setBackground(Color.decode("#A3BFDD"));
         add(new JScrollPane(table), BorderLayout.CENTER);
 
         cmdAddGradeRecord.addActionListener(e -> new AddUpdateGradeWindow().setVisible(true));
@@ -80,11 +84,16 @@ public class GradeUI extends JFrame {
         cmdUpdateGradeRecord.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
-                String[] gradeData = new String[4];
-                for (int i = 0; i < 4; i++) {
-                    gradeData[i] = table.getValueAt(selectedRow, i).toString();
+                // Extract only First Name (col 1) and Last Name (col 2)
+                String firstName = table.getValueAt(selectedRow, 1).toString();
+                String lastName  = table.getValueAt(selectedRow, 2).toString();
+                // Lookup the GradeRecord using the correct parameters
+                GradeRecord record = GradeManager.findGradeRecord(firstName, lastName);
+                if (record != null) {
+                    new AddUpdateGradeWindow(record, selectedRow).setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(GradeUI.this, "Grade record not found.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                new AddUpdateGradeWindow(gradeData, selectedRow).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(GradeUI.this, "Please select a grade record to update.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -154,12 +163,13 @@ public class GradeUI extends JFrame {
                 gr.getStudentFirstName(),
                 gr.getStudentLastName(),
                 gr.getTeacherAssigned(),
-                gr.generateMonthlyReport("Current Month", null)
+                gr.getMonthlyReport()
             });
         }
     }
 
     private class AddUpdateGradeWindow extends JFrame {
+        private JTextField txtStudentID;
         private JTextField txtStudentFirstName;
         private JTextField txtStudentLastName;
         private JTextField txtTeacherAssigned;
@@ -172,32 +182,32 @@ public class GradeUI extends JFrame {
         private JTable gradeTable;
         private JButton cmdSave;
         private JButton cmdCancel;
+        private static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        // Constructor for adding a new grade record
         public AddUpdateGradeWindow() {
-            this(null, -1);
-        }
-
-        public AddUpdateGradeWindow(String[] gradeData, int selectedRow) {
-            setTitle(gradeData == null ? "Add Grade Record" : "Update Grade Record");
+            setTitle("Add Grade Record");
             setLayout(new BorderLayout(10, 10));
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-            JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
-            contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            setContentPane(contentPanel);
-
-            JPanel pnlStudentInfo = new JPanel(new GridLayout(2, 3, 10, 10));
+            // Top Panel: Empty fields for new record
+            JPanel pnlStudentInfo = new JPanel(new GridLayout(2, 4, 10, 10));
+            pnlStudentInfo.add(new JLabel("Student ID:"));
+            txtStudentID = new JTextField();
+            txtStudentID.setEditable(false); // ID will be auto-generated or linked later
+            pnlStudentInfo.add(txtStudentID);
             pnlStudentInfo.add(new JLabel("First Name:"));
-            pnlStudentInfo.add(new JLabel("Last Name:"));
-            pnlStudentInfo.add(new JLabel("Teacher Assigned:"));
             txtStudentFirstName = new JTextField();
             pnlStudentInfo.add(txtStudentFirstName);
+            pnlStudentInfo.add(new JLabel("Last Name:"));
             txtStudentLastName = new JTextField();
             pnlStudentInfo.add(txtStudentLastName);
+            pnlStudentInfo.add(new JLabel("Teacher Assigned:"));
             txtTeacherAssigned = new JTextField();
             pnlStudentInfo.add(txtTeacherAssigned);
-            contentPanel.add(pnlStudentInfo, BorderLayout.NORTH);
+            add(pnlStudentInfo, BorderLayout.NORTH);
 
+            // Center Panel: Grade Entry Section
             JPanel pnlEntry = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
             cmbSubject = new JComboBox<>(GradeRecord.SUBJECTS.toArray(new String[0]));
             pnlEntry.add(new JLabel("Subject:"));
@@ -206,27 +216,30 @@ public class GradeUI extends JFrame {
             pnlEntry.add(new JLabel("Grade:"));
             pnlEntry.add(txtGrade);
             txtDate = new JTextField(10);
-            txtDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            txtDate.setText(LocalDate.now().format(dtFormatter));
             pnlEntry.add(new JLabel("Date (yyyy-MM-dd):"));
             pnlEntry.add(txtDate);
             btnAddEntry = new JButton("Add Entry");
             pnlEntry.add(btnAddEntry);
             btnRemoveEntry = new JButton("Remove Selected");
             pnlEntry.add(btnRemoveEntry);
-            contentPanel.add(pnlEntry, BorderLayout.CENTER);
+            add(pnlEntry, BorderLayout.CENTER);
 
+            // Table for grade entries
             String[] columns = {"Subject", "Grade", "Date"};
             gradeTableModel = new DefaultTableModel(columns, 0);
             gradeTable = new JTable(gradeTableModel);
-            contentPanel.add(new JScrollPane(gradeTable), BorderLayout.SOUTH);
+            add(new JScrollPane(gradeTable), BorderLayout.SOUTH);
 
+            // Bottom Panel: Save/Cancel
             JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             cmdSave = new JButton("Save");
             cmdCancel = new JButton("Cancel");
             pnlButtons.add(cmdSave);
             pnlButtons.add(cmdCancel);
-            contentPanel.add(pnlButtons, BorderLayout.PAGE_END);
+            add(pnlButtons, BorderLayout.PAGE_END);
 
+            // Action for adding grade entries
             btnAddEntry.addActionListener(e -> {
                 String subject = (String) cmbSubject.getSelectedItem();
                 String gradeStr = txtGrade.getText().trim();
@@ -237,10 +250,10 @@ public class GradeUI extends JFrame {
                 }
                 try {
                     int grade = Integer.parseInt(gradeStr);
-                    LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    gradeTableModel.addRow(new Object[]{subject, grade, date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))});
+                    LocalDate date = LocalDate.parse(dateStr, dtFormatter);
+                    gradeTableModel.addRow(new Object[]{subject, grade, date.format(dtFormatter)});
                     txtGrade.setText("");
-                    txtDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    txtDate.setText(LocalDate.now().format(dtFormatter));
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Invalid grade or date format.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -265,21 +278,25 @@ public class GradeUI extends JFrame {
                     if (confirm != JOptionPane.YES_OPTION) return;
                 }
 
-                GradeRecord record = GradeManager.findGradeRecord(txtStudentFirstName.getText(), txtStudentLastName.getText());
-                if (record == null) {
-                    record = new GradeRecord(
-                        txtStudentFirstName.getText(),
-                        txtStudentLastName.getText(),
-                        txtTeacherAssigned.getText()
-                    );
-                    GradeManager.addGradeRecord(record);
+                StudentRecord sr = StudentRecord.findStudent(txtStudentFirstName.getText(), txtStudentLastName.getText());
+                if (sr == null) {
+                    JOptionPane.showMessageDialog(this, "Student not found. Please ensure the student exists.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+
+                GradeRecord record = new GradeRecord(
+                    sr.getId(),
+                    txtStudentFirstName.getText(),
+                    txtStudentLastName.getText(),
+                    txtTeacherAssigned.getText()
+                );
                 for (int i = 0; i < gradeTableModel.getRowCount(); i++) {
                     String subject = gradeTableModel.getValueAt(i, 0).toString();
                     int grade = Integer.parseInt(gradeTableModel.getValueAt(i, 1).toString());
-                    LocalDate date = LocalDate.parse(gradeTableModel.getValueAt(i, 2).toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    LocalDate date = LocalDate.parse(gradeTableModel.getValueAt(i, 2).toString(), dtFormatter);
                     record.addGrade(subject, grade, date);
                 }
+                GradeManager.addGradeRecord(record);
                 GradeManager.saveAllRecordsToFile();
                 refreshTable();
                 dispose();
@@ -287,13 +304,121 @@ public class GradeUI extends JFrame {
 
             cmdCancel.addActionListener(e -> dispose());
 
-            if (gradeData != null) {
-                txtStudentFirstName.setText(gradeData[0]);
-                txtStudentLastName.setText(gradeData[1]);
-                txtTeacherAssigned.setText(gradeData[2]);
-            }
+            pack();
+            setLocationRelativeTo(null);
+        }
 
-            setPreferredSize(new Dimension(800, 600));
+        // Constructor for updating an existing grade record
+        public AddUpdateGradeWindow(GradeRecord record, int selectedRow) {
+            setTitle("Update Grade Record");
+            setLayout(new BorderLayout(10, 10));
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            // Top Panel: Student Info pre-populated from GradeRecord
+            JPanel pnlStudentInfo = new JPanel(new GridLayout(2, 4, 10, 10));
+            pnlStudentInfo.add(new JLabel("Student ID:"));
+            txtStudentID = new JTextField(String.valueOf(record.getStudentId()));
+            txtStudentID.setEditable(false); // read-only
+            pnlStudentInfo.add(txtStudentID);
+            pnlStudentInfo.add(new JLabel("First Name:"));
+            txtStudentFirstName = new JTextField(record.getStudentFirstName());
+            pnlStudentInfo.add(txtStudentFirstName);
+            pnlStudentInfo.add(new JLabel("Last Name:"));
+            txtStudentLastName = new JTextField(record.getStudentLastName());
+            pnlStudentInfo.add(txtStudentLastName);
+            pnlStudentInfo.add(new JLabel("Teacher Assigned:"));
+            txtTeacherAssigned = new JTextField(record.getTeacherAssigned());
+            pnlStudentInfo.add(txtTeacherAssigned);
+            add(pnlStudentInfo, BorderLayout.NORTH);
+
+            // Center Panel: Grade Entry Section
+            JPanel pnlEntry = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+            cmbSubject = new JComboBox<>(GradeRecord.SUBJECTS.toArray(new String[0]));
+            pnlEntry.add(new JLabel("Subject:"));
+            pnlEntry.add(cmbSubject);
+            txtGrade = new JTextField(5);
+            pnlEntry.add(new JLabel("Grade:"));
+            pnlEntry.add(txtGrade);
+            txtDate = new JTextField(10);
+            txtDate.setText(LocalDate.now().format(dtFormatter));
+            pnlEntry.add(new JLabel("Date (yyyy-MM-dd):"));
+            pnlEntry.add(txtDate);
+            btnAddEntry = new JButton("Add Entry");
+            pnlEntry.add(btnAddEntry);
+            btnRemoveEntry = new JButton("Remove Selected");
+            pnlEntry.add(btnRemoveEntry);
+            add(pnlEntry, BorderLayout.CENTER);
+
+            // Table for grade entries
+            String[] columns = {"Subject", "Grade", "Date"};
+            gradeTableModel = new DefaultTableModel(columns, 0);
+            gradeTable = new JTable(gradeTableModel);
+            add(new JScrollPane(gradeTable), BorderLayout.SOUTH);
+
+            // Bottom Panel: Save/Cancel
+            JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            cmdSave = new JButton("Save");
+            cmdCancel = new JButton("Cancel");
+            pnlButtons.add(cmdSave);
+            pnlButtons.add(cmdCancel);
+            add(pnlButtons, BorderLayout.PAGE_END);
+
+            // Action for adding grade entries
+            btnAddEntry.addActionListener(e -> {
+                String subject = (String) cmbSubject.getSelectedItem();
+                String gradeStr = txtGrade.getText().trim();
+                String dateStr = txtDate.getText().trim();
+                if (gradeStr.isEmpty() || dateStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Grade and Date must be provided.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                try {
+                    int grade = Integer.parseInt(gradeStr);
+                    LocalDate date = LocalDate.parse(dateStr, dtFormatter);
+                    gradeTableModel.addRow(new Object[]{subject, grade, date.format(dtFormatter)});
+                    txtGrade.setText("");
+                    txtDate.setText(LocalDate.now().format(dtFormatter));
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid grade or date format.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            btnRemoveEntry.addActionListener(e -> {
+                int selected = gradeTable.getSelectedRow();
+                if (selected != -1) {
+                    gradeTableModel.removeRow(selected);
+                }
+            });
+
+            cmdSave.addActionListener(e -> {
+                if (txtStudentFirstName.getText().trim().isEmpty() ||
+                    txtStudentLastName.getText().trim().isEmpty() ||
+                    txtTeacherAssigned.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Student and teacher fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (gradeTableModel.getRowCount() == 0) {
+                    int confirm = JOptionPane.showConfirmDialog(this, "No grade entries added. Continue?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                    if (confirm != JOptionPane.YES_OPTION) return;
+                }
+                // Update the GradeRecord with new grade entries
+                for (int i = 0; i < gradeTableModel.getRowCount(); i++) {
+                    String subj = gradeTableModel.getValueAt(i, 0).toString();
+                    int grd = Integer.parseInt(gradeTableModel.getValueAt(i, 1).toString());
+                    LocalDate dt = LocalDate.parse(gradeTableModel.getValueAt(i, 2).toString(), dtFormatter);
+                    record.addGrade(subj, grd, dt);
+                }
+                // Update teacher assignment if modified
+                record.reassignTeacher(txtTeacherAssigned.getText(), LocalDate.now().getYear());
+                GradeManager.saveAllRecordsToFile();
+                StudentRecord sr = StudentRecord.findStudent(txtStudentFirstName.getText(), txtStudentLastName.getText());
+                if (sr != null) sr.updateIndividualFile();
+                refreshTable();
+                dispose();
+            });
+
+            cmdCancel.addActionListener(e -> dispose());
+
             pack();
             setLocationRelativeTo(null);
         }
