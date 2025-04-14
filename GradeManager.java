@@ -101,7 +101,17 @@ public class GradeManager {
                 String teacherHistoryStr = tokens[3];
                 String gradesStr = tokens[4];
                 
-                GradeRecord record = new GradeRecord(firstName, lastName, teacherAssigned);
+                // Retrieve the student ID from StudentRecord
+                StudentRecord sr = StudentRecord.findStudent(firstName, lastName);
+                if (sr == null) {
+                    System.out.println("Student not found for record: " + firstName + " " + lastName);
+                    continue;
+                }
+                int studentId = sr.getId();
+
+                // Pass the student ID to the GradeRecord constructor
+                GradeRecord record = new GradeRecord(studentId, firstName, lastName, teacherAssigned);
+                
                 Map<Integer, String> teacherHistory = new HashMap<>();
                 if (!teacherHistoryStr.isEmpty()) {
                     String[] entries = teacherHistoryStr.split(",");
@@ -139,7 +149,6 @@ public class GradeManager {
                 }
                 gradeRecords.add(record);
                 // Also update the corresponding student's individual file.
-                StudentRecord sr = StudentRecord.findStudent(firstName, lastName);
                 if (sr != null) {
                     sr.updateIndividualFile();
                 }
